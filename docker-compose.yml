@@ -1,0 +1,59 @@
+services:
+  nostrcheck-db:
+    image: mysql:5.7
+    container_name: nostrcheck-db
+    environment:
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      MYSQL_DATABASE: nostrcheck
+      MYSQL_USER: nostrcheck
+      MYSQL_PASSWORD: nostrcheck
+    volumes:
+      - .nostrcheck:/var/lib/mysql
+    networks:
+      default:
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 360s
+  nostrcheck-redis:
+    image: redis:7.0.5-alpine3.16
+    container_name: nostrcheck-redis
+    volumes:
+      - cache:/data
+    command: redis-server --loglevel warning
+    networks:
+      default:
+    restart: always
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping', '|', 'grep', 'PONG']
+      interval: 1s
+      timeout: 5s
+      retries: 5
+  nostrcheck-api:
+    build: .
+    container_name: nostrcheck-api
+    ports:
+      - 127.0.0.1:3000:3000
+    depends_on:
+      nostrcheck-redis:
+        condition: service_healthy
+      nostrcheck-db:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      default:
+
+networks:
+  default:
+    name: nostrcheck
+    ipam:
+      driver: default
+      config:
+        - subnet: 12.12.12.0/24
+
+volumes:
+  cache:
