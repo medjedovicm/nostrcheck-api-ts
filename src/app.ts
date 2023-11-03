@@ -9,6 +9,7 @@ const app = express();
 
 app.set("host", process.env.HOSTNAME ?? config.get('server.host'));
 app.set("port", process.env.PORT ?? config.get('server.port'));
+app.set("env", process.env.ENVIRONMENT ?? config.get('environment'))
 app.set("version", process.env.npm_package_version ?? "0.0");
 app.set(
 	"pubkey",
