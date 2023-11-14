@@ -552,6 +552,7 @@ To start the app in the Docker for production, in detached mode:
 
 ```
 npm run docker:compose:start:detached
+```
 
 ### NGINX Config
 
