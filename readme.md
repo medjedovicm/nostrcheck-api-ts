@@ -575,6 +575,7 @@ server {
     proxy_cache_bypass $http_upgrade;
   }
 }
+EOF
 ```
 
 To enable SSL, certbot needs to be run for the domain:
