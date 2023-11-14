@@ -558,7 +558,8 @@ npm run docker:compose:start:detached
 
 When running with Docker on the fresh machine, the following NGINX config needs to be set
 
-File: \**/etc/nginx/sites-available/default*Execute the following code at once in the terminal, to update the NGINX config
+In the file: **/etc/nginx/sites-available/default**  
+Execute the following code at once in the terminal, to update the NGINX config
 
 ```
 cat <<'EOF' >> /etc/nginx/sites-available/default
