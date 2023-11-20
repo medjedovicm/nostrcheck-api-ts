@@ -540,6 +540,58 @@ sudo nano config/default.json
  
 ```
 
+## Docker
+
+To start the app in the Docker for debugging or dev purposes:
+
+```
+npm run docker:compose:start
+```
+
+To start the app in the Docker for production, in detached mode:
+
+```
+npm run docker:compose:start:detached
+```
+
+### NGINX Config
+
+When running with Docker on the fresh machine, the following NGINX config needs to be set
+
+In the file: **/etc/nginx/sites-available/default**  
+Execute the following code at once in the terminal, to update the NGINX config
+
+```
+cat <<'EOF' >> /etc/nginx/sites-available/default
+
+server {
+  server_name domain.com;
+
+  location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+  }
+}
+EOF
+```
+
+To enable SSL, certbot needs to be run for the domain:
+
+```
+sudo certbot --nginx --agree-tos -n -d domain.com
+```
+
+Restart the Nginx service
+
+```
+sudo service nginx restart
+
+```
+
+
 ## License
 
 MIT License (MIT)

@@ -3,9 +3,14 @@ import { createClient } from "redis";
 import { logger } from "../lib/logger.js";
 import { RegisteredUsernameResult } from "../interfaces/register.js";
 import { LightningUsernameResult } from "../interfaces/lightning.js";
+import config from "config";
 
 //Redis configuration
-const redisClient = createClient();
+const redisClient = createClient({
+	socket: {
+		host: config.get('redis.host') ?? 'localhost'
+	}
+});
 (async (): Promise<void> => {
 	redisClient.on("error", (error) =>{
 		logger.error(`There is a problem connecting to redis server, is redis-server package installed on your system? : ${error}`);

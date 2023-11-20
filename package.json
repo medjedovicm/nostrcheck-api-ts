@@ -10,7 +10,9 @@
     "build": "tsc",
     "lint": "eslint --ignore-path .gitignore . --ext .ts",
     "lint:fix": "npm run lint -- --fix",
-    "test": "vitest"
+    "test": "vitest",
+    "docker:compose:start": "BUILDKIT_PROGRESS=plain docker compose -f ./docker-compose.yml up --build --remove-orphans $@",
+    "docker:compose:start:detached": "docker compose -f ./docker-compose.yml up -d --build --remove-orphans $@"
   },
   "author": "https://github.com/quentintaranpino",
   "license": "apache-2.0",
