@@ -5,6 +5,7 @@ WORKDIR /home
 # where available (npm@5+)
 COPY package*.json ./
 RUN npm install
+RUN apt-get update && apt install ffmpeg jq -y
 
 COPY . .
 EXPOSE 3000
